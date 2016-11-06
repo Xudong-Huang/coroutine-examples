@@ -1,0 +1,92 @@
+test from windows host(192.168.56.101)
+
+single io thread
+libev
+$ ./echo_client.exe -a 192.168.56.102:5000 -c 1000 -t 15
+==================Benchmarking: 192.168.56.102:5000==================
+1000 clients, running 100 bytes, 15 sec.
+
+Speed: 35651 request/sec,  35651 response/sec
+Requests: 534769
+Responses: 534768
+
+rust-coroutine single io thread
+$ ./echo_client.exe -a 192.168.56.102:8080 -c 1000 -t 15
+==================Benchmarking: 192.168.56.102:8080==================
+1000 clients, running 100 bytes, 15 sec.
+
+Speed: 34465 request/sec,  34465 response/sec
+Requests: 516980
+Responses: 516979
+
+
+rust-coroutine multi io thread=4
+$ ./echo_client.exe -a 192.168.56.102:8080 -c 1000 -t 15
+==================Benchmarking: 192.168.56.102:8080==================
+1000 clients, running 100 bytes, 15 sec.
+
+Speed: 36032 request/sec,  36032 response/sec
+Requests: 540484
+Responses: 540484
+
+
+
+test from local host
+
+rust-coroutine single io thread
+$ target/release/examples/echo_client -a 127.0.0.1:8080 -c 1000 -l 80
+==================Benchmarking: 127.0.0.1:8080==================
+1000 clients, running 80 bytes, 10 sec.
+
+Speed: 88349 request/sec,  88349 response/sec, 6902 kb/sec
+Requests: 883497
+Responses: 883497
+target/release/examples/echo_client -a 127.0.0.1:8080 -c 1000 -l 80  0.01s
+user 9.90s system 98% cpu 10.041 total
+
+rust-coroutine (multi io threads=4)
+$ target/release/examples/echo_client -a 127.0.0.1:8080 -c 1000 -l 80
+==================Benchmarking: 127.0.0.1:8080==================
+1000 clients, running 80 bytes, 10 sec.
+
+Speed: 162983 request/sec,  162983 response/sec, 12733 kb/sec
+Requests: 1629833
+Responses: 1629832
+target/release/examples/echo_client -a 127.0.0.1:8080 -c 1000 -l 80  0.05s
+user 19.97s system 199% cpu 10.046 total
+
+
+libev single io thread
+$ target/release/examples/echo_client -a 127.0.0.1:5000 -c 1000 -l 80
+==================Benchmarking: 127.0.0.1:5000==================
+1000 clients, running 80 bytes, 10 sec.
+
+Speed: 88360 request/sec,  88360 response/sec, 6903 kb/sec
+Requests: 883605
+Responses: 883605
+target/release/examples/echo_client -a 127.0.0.1:5000 -c 1000 -l 80  0.03s
+user 10.01s system 99% cpu 10.047 total
+
+
+go multi io threads
+$ target/release/examples/echo_client -a 127.0.0.1:3000 -c 1000 -l 80
+==================Benchmarking: 127.0.0.1:3000==================
+1000 clients, running 80 bytes, 10 sec.
+
+Speed: 121327 request/sec,  121327 response/sec, 9478 kb/sec
+Requests: 1213278
+Responses: 1213276
+target/release/examples/echo_client -a 127.0.0.1:3000 -c 1000 -l 80  0.09s
+user 19.06s system 190% cpu 10.044 total
+
+
+mioco multi io threads
+$ target/release/examples/echo_client -a 127.0.0.1:5555 -c 1000 -l 80   
+==================Benchmarking: 127.0.0.1:5555==================
+1000 clients, running 80 bytes, 10 sec.
+
+Speed: 132309 request/sec,  132309 response/sec, 10336 kb/sec
+Requests: 1323096
+Responses: 1323094
+target/release/examples/echo_client -a 127.0.0.1:5555 -c 1000 -l 80  0.07s
+user 19.75s system 197% cpu 10.037 total
